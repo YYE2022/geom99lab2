@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>Travel Routes in Paris</title>
+
+    <style>
+      html,
+      body,
+      #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+	
+    <link rel="stylesheet" href="https://js.arcgis.com/4.25/esri/themes/light/main.css">
+    <script src="https://js.arcgis.com/4.25/"></script>
+    
+    <script>
+      require(["esri/config", "esri/Map", "esri/views/MapView", "esri/Graphic",
+    "esri/layers/GraphicsLayer" ], function(esriConfig,Map, MapView, Graphic, GraphicsLayer) {
+        esriConfig.apiKey = "AAPKb3d9766753d44713a41fb0d4e986bbfazgH9dBWQr5REJ5yBcxzrd86GDccmWn08mgvQDMPIqvXCXyAM-92MeZuPl4vl8xdB";
+
+        const map = new Map({
+          basemap: "arcgis-imagery" // Basemap layer service
+        });
+        const view = new MapView({
+          map: map,
+          center: [2.3127,48.8565 ], // Longitude, latitude
+          zoom: 14, // Zoom level
+          container: "viewDiv" // Div element
+        });
+		const graphicsLayer = new GraphicsLayer();
+        map.add(graphicsLayer);
+		
+		
+		 // Create a polygon geometry
+           const polygon = {
+			type: "polygon",
+			rings: [
+			    [2.2945, 48.8584],//Longitude, latitude
+				[2.2944206,48.8639312],//Longitude, latitude
+				[2.300350465, 48.8680131946], //Longitude, latitude
+				[2.3136, 48.8639], //Longitude, latitude
+				[2.3246, 48.8700], //Longitude, latitude
+				[2.333061,48.867841],//Longitude, latitude
+				[2.3376, 48.8606],   //Longitude, latitude
+				[2.318057, 48.847135]  //Longitude, latitude
+			]
+		 };
+
+		 const simpleFillSymbol = {
+			type: "simple-fill",
+			color: [255, 0, 0, 0.7],  // red, opacity 70%
+			outline: {
+				color: [255, 255, 255],
+				width: 3
+			}
+		 };
+		 // create pop up content
+		 const popupTemplate = {
+			title: "{Name}",
+			content: "{Description}"
+		 }
+		 const attributes = {
+			Name: "Travel Routes for Valentine's Day:",
+			Description: "Starting from the top-left of the heart, moving right :Four Seasons Hotel-Pont Alexandre III bridge-La Madeleine Church-Le Quinze Vins Wine Bar-Louvre Museum-La Pâtisserie Cyril Lignac Pastry Shop-Eiffel Tower-Les Marches French Restaurant-back to the hotel"
+		 }
+		 
+		 const polygonGraphic = new Graphic({
+			geometry: polygon,
+			symbol: simpleFillSymbol,
+
+			attributes: attributes,
+			popupTemplate: popupTemplate
+
+		 });
+		 graphicsLayer.add(polygonGraphic);
+      });
+    </script>
+    
+    
+  </head>
+  <body>
+    <div id="viewDiv"></div>
+  </body>
+</html>
